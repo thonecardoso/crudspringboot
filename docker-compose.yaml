@@ -1,0 +1,28 @@
+version: '3'
+services:
+  springboot:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    image: springboot/api
+    ports:
+      - '8080:8080'
+      - '5005:5005'
+    environment:
+      - ADDITIONAL_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+      - PROFILE=dev
+    links:
+      - db
+  db:
+    container_name: bdpostgres
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=main
+    volumes:
+      - ./docker/volume_postgres:/var/lib/postgresql/data
+
