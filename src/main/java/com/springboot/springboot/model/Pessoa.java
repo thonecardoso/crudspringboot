@@ -17,5 +17,10 @@ public class Pessoa implements Serializable {
     private long id;
     private String nome;
     private String sobrenome;
-    private int idade;
+    private String email;
+    private String endereco;
+    private String complemento;
+    private String pais;
+    private String estado;
+    private String cep;
 }

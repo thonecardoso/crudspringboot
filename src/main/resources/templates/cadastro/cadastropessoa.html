@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<!--
     <form action="salvarpessoa" METHOD="post">
         <label>Nome</label>
         <input name="nome">
@@ -14,15 +15,22 @@
         <input name="idade">
         <input type="submit" value="Salvar">
     </form>
-
+-->
     <a href="/listapessoas">Listar Pessoas</a>
+    <a href="/cadastropessoa">Cadastro Pessoa</a>
 
     <table>
         <tr th:each = "pessoa : ${pessoas}">
             <td th:text = "${pessoa.id}"></td>
             <td th:text = "${pessoa.nome}"></td>
             <td th:text = "${pessoa.sobrenome}"></td>
-            <td th:text = "${pessoa.idade}"></td>
+            <td th:text = "${pessoa.email}"></td>
+            <td th:text = "${pessoa.endereco}"></td>
+            <td th:text = "${pessoa.complemento}"></td>
+            <td th:text = "${pessoa.pais}"></td>
+            <td th:text = "${pessoa.estado}"></td>
+            <td th:text = "${pessoa.cep}"></td>
+            <td></td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" >Editar</a></td>
         </tr>
     </table>
 
