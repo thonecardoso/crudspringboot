@@ -69,4 +69,19 @@ public class PessoaController {
         return modelAndView;
     }
 
+    @GetMapping("/excluirpessoa/{idpessoa}")
+    public ModelAndView excluir(@PathVariable("idpessoa") long idpessoa){
+        pessoaRepository.deleteById(idpessoa);
+
+        Iterable<Estados> estadosIT = estadosRepository.findAll();
+        var paisesIT = paisRepository.findAll();
+        ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
+        Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
+        modelAndView.addObject("pessoas", pessoasIt);
+
+        modelAndView.addObject("estados", estadosIT);
+        modelAndView.addObject("paises", paisesIT);
+        return modelAndView;
+    }
+
 }

@@ -21,16 +21,19 @@
 
     <table>
         <tr th:each = "pessoa : ${pessoas}">
-            <td th:text = "${pessoa.id}"></td>
-            <td th:text = "${pessoa.nome}"></td>
-            <td th:text = "${pessoa.sobrenome}"></td>
-            <td th:text = "${pessoa.email}"></td>
-            <td th:text = "${pessoa.endereco}"></td>
-            <td th:text = "${pessoa.complemento}"></td>
-            <td th:text = "${pessoa.pais}"></td>
-            <td th:text = "${pessoa.estado}"></td>
-            <td th:text = "${pessoa.cep}"></td>
-            <td></td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" >Editar</a></td>
+
+                    <td th:text = "${pessoa.id}"></td>
+                    <td th:text = "${pessoa.nome}"></td>
+                    <td th:text = "${pessoa.sobrenome}"></td>
+                    <td th:text = "${pessoa.email}"></td>
+                    <td th:text = "${pessoa.endereco}"></td>
+                    <td th:text = "${pessoa.complemento}"></td>
+                    <td th:text = "${pessoa.pais}"></td>
+                    <td th:text = "${pessoa.estado}"></td>
+                    <td th:text = "${pessoa.cep}"></td>
+                    <td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" >Editar</a></td>
+                    <td><a th:href="@{/excluirpessoa/{idpessoa}(idpessoa=${pessoa.id})}" >Excluir</a></td>
+
         </tr>
     </table>
 
