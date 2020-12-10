@@ -1,6 +1,10 @@
 package com.springboot.springboot.controller;
 
+import com.springboot.springboot.Repository.EstadosRepository;
+import com.springboot.springboot.Repository.PaisRepository;
 import com.springboot.springboot.Repository.PessoaRepository;
+import com.springboot.springboot.model.Estados;
+import com.springboot.springboot.model.Pais;
 import com.springboot.springboot.model.Pessoa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,16 +19,27 @@ public class PessoaController {
 
     @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
+    private EstadosRepository estadosRepository;
+    @Autowired
+    private PaisRepository paisRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
     public ModelAndView inicio(){
+
+
+        var estadosIT = estadosRepository.findAll();
+        var paisesIT = paisRepository.findAll();
+
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa1");
         modelAndView.addObject("pessoaobj", new Pessoa());
+        modelAndView.addObject("estados", estadosIT);
+        modelAndView.addObject("paises", paisesIT);
         return modelAndView;
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/salvarpessoa")
+    @RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
     public ModelAndView salvar(Pessoa pessoa){
         pessoaRepository.save(pessoa);
 
@@ -45,8 +60,12 @@ public class PessoaController {
     @GetMapping("/editarpessoa/{idpessoa}")
     public ModelAndView editar(@PathVariable("idpessoa") long idpessoa){
         var pessoa = pessoaRepository.findById(idpessoa);
+        Iterable<Estados> estadosIT = estadosRepository.findAll();
+        var paisesIT = paisRepository.findAll();
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa1");
         modelAndView.addObject("pessoaobj", pessoa.get());
+        modelAndView.addObject("estados", estadosIT);
+        modelAndView.addObject("paises", paisesIT);
         return modelAndView;
     }
 
