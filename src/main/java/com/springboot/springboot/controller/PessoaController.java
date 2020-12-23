@@ -8,10 +8,7 @@ import com.springboot.springboot.model.Pais;
 import com.springboot.springboot.model.Pessoa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -81,6 +78,15 @@ public class PessoaController {
 
         modelAndView.addObject("estados", estadosIT);
         modelAndView.addObject("paises", paisesIT);
+        return modelAndView;
+    }
+
+    @PostMapping("**/pesquisarpessoa")
+    public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa){
+        ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
+        modelAndView.addObject("pessoas", pessoaRepository.findPessoaByName(nomepesquisa));
+        modelAndView.addObject("estados", estadosRepository.findAll());
+        modelAndView.addObject("paises", paisRepository.findAll());
         return modelAndView;
     }
 
