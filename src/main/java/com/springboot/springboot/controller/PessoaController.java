@@ -27,7 +27,7 @@ public class PessoaController {
         var estadosIT = estadosRepository.findAll();
         var paisesIT = paisRepository.findAll();
 
-        ModelAndView modelAndView = new ModelAndView("cadastropessoa");
+        ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
         modelAndView.addObject("pessoaobj", new Pessoa());
         modelAndView.addObject("estados", estadosIT);
         modelAndView.addObject("paises", paisesIT);
@@ -39,7 +39,7 @@ public class PessoaController {
     public ModelAndView salvar(Pessoa pessoa){
         pessoaRepository.save(pessoa);
 
-        ModelAndView modelAndView = new ModelAndView("listarpessoa");
+        ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
         Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
         modelAndView.addObject("pessoas", pessoasIt);
         return modelAndView;
@@ -47,7 +47,7 @@ public class PessoaController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/listapessoas")
     public ModelAndView pessoas(){
-        ModelAndView modelAndView = new ModelAndView("listarpessoa");
+        ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
         Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
         modelAndView.addObject("pessoas", pessoasIt);
         return modelAndView;
@@ -58,7 +58,7 @@ public class PessoaController {
         var pessoa = pessoaRepository.findById(idpessoa);
         Iterable<Estados> estadosIT = estadosRepository.findAll();
         var paisesIT = paisRepository.findAll();
-        ModelAndView modelAndView = new ModelAndView("cadastropessoa");
+        ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
         modelAndView.addObject("pessoaobj", pessoa.get());
         modelAndView.addObject("estados", estadosIT);
         modelAndView.addObject("paises", paisesIT);
@@ -71,7 +71,7 @@ public class PessoaController {
 
         Iterable<Estados> estadosIT = estadosRepository.findAll();
         var paisesIT = paisRepository.findAll();
-        ModelAndView modelAndView = new ModelAndView("listarpessoa");
+        ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
         Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
         modelAndView.addObject("pessoas", pessoasIt);
 
@@ -82,7 +82,7 @@ public class PessoaController {
 
     @PostMapping("**/pesquisarpessoa")
     public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa){
-        ModelAndView modelAndView = new ModelAndView("listarpessoa");
+        ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
         modelAndView.addObject("pessoas", pessoaRepository.findPessoaByName(nomepesquisa));
         modelAndView.addObject("estados", estadosRepository.findAll());
         modelAndView.addObject("paises", paisRepository.findAll());

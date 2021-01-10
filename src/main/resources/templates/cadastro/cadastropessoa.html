@@ -10,6 +10,7 @@
   <body style="background-color: black; padding-top: 25px; padding-bottom: 25px;">
     <div class="container" style="background-color: lightcyan; padding-bottom: 25px; padding-top: 25px;">
       <div class="col-md-8 order-md-1  ">
+
         <form class="needs-validation was-validated" novalidate="" action="salvarpessoa" METHOD="post" th:object="${pessoaobj}">
           <h4 class="mb-3">Cadastro Pessoa</h4>
             <div class="row">
@@ -29,21 +30,6 @@
                 </div>
               </div>
             </div>
-            <!--  
-            <div class="mb-3">
-              <label for="username">Username</label>
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">@</span>
-                </div>
-                <input type="text" class="form-control" id="username" placeholder="Username" required="">
-                <div class="invalid-feedback" style="width: 100%;">
-                  Your username is required.
-                </div>
-              </div>
-            </div>
-            -->
-
             <div class="mb-3">
               <label for="email">Email <span class="text-muted">(Opcional)</span></label>
               <input name="email" type="email" class="form-control" id="email" placeholder="you@example.com" th:field="*{email}">
