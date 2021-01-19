@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +24,7 @@ public class Pessoa implements Serializable {
     private String pais;
     private String estado;
     private String cep;
+
+    @OneToMany(mappedBy = "pessoa")
+    private List<Telefone> telefones;
 }

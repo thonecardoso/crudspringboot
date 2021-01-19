@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <title>Cadastro de Pessoas</title>
+</head>
+
+<h4>Cadastro de Pessoas</h4>
+
+<body >
+    <div th:each="p: ${pessoaobj}">
+        <div class="row">
+            <p>ID: <span th:text="${p.id}"></span></p>
+            <p>Nome: <span th:text="${p.nome}"></span></p>
+            <p>Sobrenome: <span th:text="${p.sobrenome}"></span></p>
+            <p>Email: <span th:text="${p.email}"></span></p>
+            <p>Endereço: <span th:text="${p.endereco}"></span></p>
+            <p>Complemento: <span th:text="${p.complemento}"></span></p>
+            <p>Pais: <span th:text="${p.pais}"></span></p>
+            <p>Estado: <span th:text="${p.estado}"></span></p>
+            <p>Cep: <span th:text="${p.cep}"></span></p>
+        </div>
+
+    </div>
+
+    <h4>Telefones</h4>
+    <div class="row">
+        <form th:action="@{/addFonePessoa/{pessoaid}(pessoaid=${pessoaobj.id})}" method="post" class="">
+            <div class="row">
+                <div>
+                    <label for="numero">Número</label>
+                    <input id="numero" name="numero" class="">
+                </div>
+                <div>
+                    <label for="tipo">Tipo</label>
+                    <input id="tipo" name="tipo" class="">
+                </div>
+            </div>
+            <input type="submit" value="Adicionar">
+        </form>
+    </div>
+
+</body>
+</html>
