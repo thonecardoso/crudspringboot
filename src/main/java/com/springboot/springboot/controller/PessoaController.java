@@ -5,6 +5,7 @@ import com.springboot.springboot.Repository.PaisRepository;
 import com.springboot.springboot.Repository.PessoaRepository;
 import com.springboot.springboot.Repository.TelefoneRepository;
 import com.springboot.springboot.model.Estados;
+import com.springboot.springboot.model.Pais;
 import com.springboot.springboot.model.Pessoa;
 import com.springboot.springboot.model.Telefone;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,9 +114,48 @@ public class PessoaController {
         var pessoa = pessoaRepository.findById(pessoaid).get();
         var modelAndView = new ModelAndView("cadastro/telefones");
 
+        telefone.setPessoa(pessoa);
+
         telefoneRepository.save(telefone);
 
         modelAndView.addObject("pessoaobj", pessoa);
+
+        var estadosIT = estadosRepository.findAll();
+        var paisesIT = paisRepository.findAll();
+        modelAndView.addObject("estados", estadosIT);
+        modelAndView.addObject("paises", paisesIT);
+
+
+        return modelAndView;
+    }
+
+
+    @RequestMapping(method = RequestMethod.GET, value = "**/addPais")
+    public ModelAndView addPais(@ModelAttribute(value="paisadd") Pais pais){
+
+        paisRepository.save(pais);
+        var estadosIT = estadosRepository.findAll();
+        var paisesIT = paisRepository.findAll();
+
+        ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
+        modelAndView.addObject("pessoaobj", new Pessoa());
+        modelAndView.addObject("estados", estadosIT);
+        modelAndView.addObject("paises", paisesIT);
+        return modelAndView;
+    }
+
+    @GetMapping("**/excluirTelefone/{idtelefone}")
+    public ModelAndView excluirTelefone(@PathVariable("idtelefone") Long id){
+
+
+
+        var modelAndView = new ModelAndView("cadastro/telefones");
+
+        var pessoaid = telefoneRepository.findIdPessoa(id);
+        var pessoa = pessoaRepository.findById(pessoaid);
+        telefoneRepository.deleteById(id);
+
+        modelAndView.addObject("pessoaobj", pessoa.get());
 
         var estadosIT = estadosRepository.findAll();
         var paisesIT = paisRepository.findAll();

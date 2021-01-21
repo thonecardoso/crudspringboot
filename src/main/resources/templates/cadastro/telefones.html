@@ -43,5 +43,36 @@
         </form>
     </div>
 
+    <div class="card-body">
+        <h5 class="header-title">Telefones</h5>
+
+        <div class="">
+
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Numero</th>
+                    <th>Tipo</th>
+
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="t: *{pessoaobj.telefones}">
+
+                    <td th:text = "${t.id}"></td>
+                    <td th:text = "${t.numero}"></td>
+                    <td th:text = "${t.tipo}"></td>
+                    <td><a th:href="@{/editarTelefone/{idtelefone}(idtelefone=${t.id})}" class="btn btn-primary">Editar</a></td>
+                    <td><a th:href="@{/excluirTelefone/{idtelefone}(idtelefone=${t.id})}" class="btn btn-danger">Excluir</a></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </body>
 </html>

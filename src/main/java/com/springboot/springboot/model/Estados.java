@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Table(name = "estados")
 public class Estados {
 
-    private static final long serialVersionUID = 1L;
+
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String sigla;
     private String nome;

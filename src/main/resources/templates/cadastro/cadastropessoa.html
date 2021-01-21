@@ -8,6 +8,48 @@
       <title>Cadastro de Pessoa</title>
   </head>
   <body style="background-color: black; padding-top: 25px; padding-bottom: 25px;">
+
+    <dialog id="cadastroPais">
+      <form method="get" th:action="@{/addPais}" th:object="${paisadd}">
+        <div class="row">
+          <div>
+            <label for="nome">Pais</label>
+            <input id="nome" name="nome" class="" >
+          </div>
+        </div>
+        <button id="cancel" type="reset" onclick="fecharCadastroPais()">Cancel</button>
+        <input type="submit" value="Adicionar">
+      </form>
+    </dialog>
+
+    <script>
+
+      var d1 = document.getElementById('cadastroPais');
+      function abrirCadastroPais(){
+        d1.setAttribute("open","");
+      }
+
+      function fecharCadastroPais(){
+        d1.removeAttribute("open");
+      }
+
+      function checkAlert(evt) {
+        if (evt.target.value === "cadastrar") {
+          abrirCadastroPais();
+        }
+      }
+
+
+
+
+
+
+
+
+    </script>
+
+
+
     <div class="container" style="background-color: lightcyan; padding-bottom: 25px; padding-top: 25px;">
       <div class="col-md-8 order-md-1  ">
 
@@ -54,10 +96,14 @@
             <div class="row">
               <div class="col-md-5 mb-3">
                 <label for="country">País</label>
-                <select name="pais" class="custom-select d-block w-100" id="country" required="" >
+                <select name="pais" class="custom-select d-block w-100" id="country" required="" onchange="checkAlert(event)">
                   <option value="">Escolha...</option>
                   <option th:each = "pais : ${paises}" th:text = "${pais.nome}" th:value="${pais.nome}"  th:selected="${pessoaobj.pais eq pais.nome}"></option>
+                  <option value="cadastrar">Cadastrar novo Pais</option>
                 </select>
+
+
+
                 <div class="invalid-feedback">
                   Selecione um país válido.
                 </div>

@@ -25,6 +25,6 @@ public class Pessoa implements Serializable {
     private String estado;
     private String cep;
 
-    @OneToMany(mappedBy = "pessoa")
+    @OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefones;
 }
