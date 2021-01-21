@@ -9,49 +9,14 @@
   </head>
   <body style="background-color: black; padding-top: 25px; padding-bottom: 25px;">
 
-    <dialog id="cadastroPais">
-      <form method="get" th:action="@{/addPais}" th:object="${paisadd}">
-        <div class="row">
-          <div>
-            <label for="nome">Pais</label>
-            <input id="nome" name="nome" class="" >
-          </div>
-        </div>
-        <button id="cancel" type="reset" onclick="fecharCadastroPais()">Cancel</button>
-        <input type="submit" value="Adicionar">
-      </form>
-    </dialog>
-
-    <script>
-
-      var d1 = document.getElementById('cadastroPais');
-      function abrirCadastroPais(){
-        d1.setAttribute("open","");
-      }
-
-      function fecharCadastroPais(){
-        d1.removeAttribute("open");
-      }
-
-      function checkAlert(evt) {
-        if (evt.target.value === "cadastrar") {
-          abrirCadastroPais();
-        }
-      }
-
-
-
-
-
-
-
-
-    </script>
-
-
-
     <div class="container" style="background-color: lightcyan; padding-bottom: 25px; padding-top: 25px;">
       <div class="col-md-8 order-md-1  ">
+
+        <br/>
+          <div th:each="m : ${msg}">
+            <span th:text="${m}"></span>
+          </div>
+        <br/>
 
         <form class="needs-validation was-validated" novalidate="" action="salvarpessoa" METHOD="post" th:object="${pessoaobj}">
           <h4 class="mb-3">Cadastro Pessoa</h4>
@@ -81,52 +46,14 @@
             </div>
 
             <div class="mb-3">
-              <label for="address">Endereço</label>
-              <input name="endereco" type="text" class="form-control" id="address" placeholder="Rua São José, 55" required="" th:field="*{endereco}">
+              <label for="address">Idade</label>
+              <input name="endereco" type="text" class="form-control" id="address" placeholder="Rua São José, 55" required="" th:field="*{idade}">
               <div class="invalid-feedback">
                 Digite um Endereço válido.
               </div>
             </div>
 
-            <div class="mb-3">
-              <label for="address2">Complemento<span class="text-muted">(Opcional)</span></label>
-              <input name="complemento" type="text" class="form-control" id="address2" placeholder="Casa ou Apartamento" th:field="*{complemento}">
-            </div>
 
-            <div class="row">
-              <div class="col-md-5 mb-3">
-                <label for="country">País</label>
-                <select name="pais" class="custom-select d-block w-100" id="country" required="" onchange="checkAlert(event)">
-                  <option value="">Escolha...</option>
-                  <option th:each = "pais : ${paises}" th:text = "${pais.nome}" th:value="${pais.nome}"  th:selected="${pessoaobj.pais eq pais.nome}"></option>
-                  <option value="cadastrar">Cadastrar novo Pais</option>
-                </select>
-
-
-
-                <div class="invalid-feedback">
-                  Selecione um país válido.
-                </div>
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="state">Estado</label>
-                <select name="estado" class="custom-select d-block w-100" id="state" required="" >
-                  <option value="">Escolha...</option>
-                  <option th:each = "st : ${estados}" th:text = "${st.nome}" th:value="${st.nome}"  th:selected="${pessoaobj.estado eq st.nome}"></option>
-
-                </select>
-                <div class="invalid-feedback">
-                  Escolha um Estado válido.
-                </div>
-              </div>
-              <div class="col-md-3 mb-3">
-                <label for="zip">Cep</label>
-                <input name="cep" type="text" class="form-control" id="zip" placeholder="" required="" th:field="*{cep}">
-                <div class="invalid-feedback">
-                  Cep é necessário.
-                </div>
-              </div>
-            </div>
             <hr class="mb-4">
             
             <button class="btn btn-primary btn-lg btn-block" type="submit">Salvar</button>

@@ -1,17 +1,17 @@
 package com.springboot.springboot.controller;
 
-import com.springboot.springboot.Repository.EstadosRepository;
-import com.springboot.springboot.Repository.PaisRepository;
-import com.springboot.springboot.Repository.PessoaRepository;
-import com.springboot.springboot.Repository.TelefoneRepository;
-import com.springboot.springboot.model.Estados;
-import com.springboot.springboot.model.Pais;
-import com.springboot.springboot.model.Pessoa;
-import com.springboot.springboot.model.Telefone;
+import com.springboot.springboot.Repository.*;
+import com.springboot.springboot.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class PessoaController {
@@ -25,6 +25,9 @@ public class PessoaController {
 
     @Autowired
     private TelefoneRepository telefoneRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
 
 
@@ -44,7 +47,21 @@ public class PessoaController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
-    public ModelAndView salvar(Pessoa pessoa){
+    public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult){
+
+
+        if (bindingResult.hasErrors()){
+            ModelAndView modelAndView1 = new ModelAndView("cadastro/cadastropessoa");
+            List<String> msg = new ArrayList<String>();
+            for(ObjectError objectError : bindingResult.getAllErrors()){
+                msg.add(objectError.getDefaultMessage());
+            }
+            modelAndView1.addObject("msg", msg);
+            modelAndView1.addObject("pessoaobj", pessoa);
+
+            return modelAndView1;
+        }
+
         pessoaRepository.save(pessoa);
 
         ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
@@ -97,12 +114,12 @@ public class PessoaController {
         return modelAndView;
     }
 
-    @GetMapping("/telefones/{idpessoa}")
+    @GetMapping("/detalhesPessoa/{idpessoa}")
     public ModelAndView telefones(@PathVariable("idpessoa") long idpessoa){
         var pessoa = pessoaRepository.findById(idpessoa);
         Iterable<Estados> estadosIT = estadosRepository.findAll();
         var paisesIT = paisRepository.findAll();
-        ModelAndView modelAndView = new ModelAndView("cadastro/telefones");
+        ModelAndView modelAndView = new ModelAndView("cadastro/detalhesPessoa");
         modelAndView.addObject("pessoaobj", pessoa.get());
         modelAndView.addObject("estados", estadosIT);
         modelAndView.addObject("paises", paisesIT);
@@ -112,7 +129,7 @@ public class PessoaController {
     @PostMapping("**/addFonePessoa/{pessoaid}")
     public ModelAndView addFonePessoa(Telefone telefone, @PathVariable("pessoaid") Long pessoaid){
         var pessoa = pessoaRepository.findById(pessoaid).get();
-        var modelAndView = new ModelAndView("cadastro/telefones");
+        var modelAndView = new ModelAndView("cadastro/detalhesPessoa");
 
         telefone.setPessoa(pessoa);
 
@@ -149,11 +166,31 @@ public class PessoaController {
 
 
 
-        var modelAndView = new ModelAndView("cadastro/telefones");
+        var modelAndView = new ModelAndView("cadastro/detalhesPessoa");
 
         var pessoaid = telefoneRepository.findIdPessoa(id);
         var pessoa = pessoaRepository.findById(pessoaid);
         telefoneRepository.deleteById(id);
+
+        modelAndView.addObject("pessoaobj", pessoa.get());
+
+        var estadosIT = estadosRepository.findAll();
+        var paisesIT = paisRepository.findAll();
+        modelAndView.addObject("estados", estadosIT);
+        modelAndView.addObject("paises", paisesIT);
+
+
+        return modelAndView;
+    }
+
+    @PostMapping("**/addEnderecoPessoa/{pessoaid}")
+    public ModelAndView addEnderecoPessoa(Endereco endereco, @PathVariable("pessoaid") Long pessoaid){
+        var pessoa = pessoaRepository.findById(pessoaid);
+        var modelAndView = new ModelAndView("cadastro/detalhesPessoa");
+
+        endereco.setPessoa(pessoa.get());
+
+        enderecoRepository.save(endereco);
 
         modelAndView.addObject("pessoaobj", pessoa.get());
 
