@@ -1,5 +1,7 @@
 package com.springboot.springboot.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +13,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity
 public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private ImplementacaoUserDetailsService implementacaoUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -27,10 +32,15 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.userDetailsService(implementacaoUserDetailsService)
+                .passwordEncoder(new BCryptPasswordEncoder());
+
+        /*
         auth.inMemoryAuthentication().passwordEncoder(new BCryptPasswordEncoder())
                 .withUser("thone")
                 .password("$2a$10$WULDfqtHFa8pJg5i3RzxOOSef.LgUcoagoHqka/hLh.kAQPxKSnEu")
-                .roles("ADMIN");
+                .roles("ADMIN"); */
     }
 
     @Override
