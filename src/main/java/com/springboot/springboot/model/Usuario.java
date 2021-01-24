@@ -4,11 +4,9 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,12 +19,29 @@ public class Usuario implements UserDetails {
     private String login;
     private String senha;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "usuario_role",
+            joinColumns = @JoinColumn(
+                    name = "usuario_id",
+                    referencedColumnName = "id",
+                    table = "usuario"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "rule_id",
+                    referencedColumnName = "id",
+                    table = "role"
+            )
+
+    )
+    private List<Rule> rules;
+
 
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return rules;
     }
 
     @Override
