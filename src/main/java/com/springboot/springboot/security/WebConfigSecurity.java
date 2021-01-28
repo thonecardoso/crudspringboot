@@ -23,11 +23,16 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/").permitAll()
-                .antMatchers(HttpMethod.GET, "/cadastropessoa").hasAnyRole("ADMIN")
-                .anyRequest().authenticated()
-                .and().formLogin().permitAll()
-                .and().logout()
+                    .antMatchers(HttpMethod.GET, "/","**/salvarusuario").permitAll()
+                    .antMatchers(HttpMethod.GET, "/cadastropessoa").hasAnyRole("ADMIN")
+                    .anyRequest().authenticated()
+                    .and()
+                .formLogin().permitAll()
+//                    .loginPage("/login")
+//                  .defaultSuccessUrl("/cadastropessoa")
+//                  .failureUrl("/login?error=true")
+                    .and()
+                .logout().permitAll()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
     }
 
@@ -37,11 +42,6 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(implementacaoUserDetailsService)
                 .passwordEncoder(new BCryptPasswordEncoder());
 
-        /*
-        auth.inMemoryAuthentication().passwordEncoder(new BCryptPasswordEncoder())
-                .withUser("thone")
-                .password("$2a$10$WULDfqtHFa8pJg5i3RzxOOSef.LgUcoagoHqka/hLh.kAQPxKSnEu")
-                .roles("ADMIN"); */
     }
 
     @Override

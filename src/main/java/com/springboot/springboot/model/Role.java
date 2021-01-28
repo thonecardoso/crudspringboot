@@ -10,16 +10,16 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Rule implements GrantedAuthority {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomeRule;
+    private String nomeRole;
 
     @Override
     public String getAuthority() { //ROLE_ADMIN, ROLE_GERENTE , ...
-        return this.nomeRule;
+        return this.nomeRole;
     }
 }
