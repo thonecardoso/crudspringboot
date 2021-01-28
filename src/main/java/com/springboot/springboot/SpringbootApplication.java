@@ -20,17 +20,4 @@ public class SpringbootApplication {
 
 	}
 
-//	@Override
-//	public void addViewControllers(ViewControllerRegistry registry) {
-//		registry.addViewController("/login").setViewName("/login");
-//		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-//	}
-
-//	@Override
-//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//		registry
-//				.addResourceHandler("/resources/**")
-//				.addResourceLocations("/resources/resources/vendors/stylesheets","/resources/resources/vendors/javascripts");
-//	}
-
 }
