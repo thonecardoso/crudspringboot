@@ -183,6 +183,18 @@ public class PessoaController {
         return modelAndView;
     }
 
+    @GetMapping("**/novoendereco/{pessoaid}")
+    public ModelAndView novoEndereco(@PathVariable("pessoaid") Long pessoaid){
+
+        var modelAndView = new ModelAndView("cadastro/cadastroendereco");
+        var endereco = new Endereco();
+        endereco.setPessoa(pessoaRepository.findById(pessoaid).get());
+        modelAndView.addObject("idpessoa", pessoaid);
+        modelAndView.addObject("Objendereco", endereco);
+
+        return modelAndView;
+    }
+
     @PostMapping("**/addEnderecoPessoa/{pessoaid}")
     public ModelAndView addEnderecoPessoa(Endereco endereco, @PathVariable("pessoaid") Long pessoaid){
         var pessoa = pessoaRepository.findById(pessoaid);
@@ -199,6 +211,40 @@ public class PessoaController {
         modelAndView.addObject("estados", estadosIT);
         modelAndView.addObject("paises", paisesIT);
 
+
+        return modelAndView;
+    }
+
+    @GetMapping("**/excluirEndereco/{idendereco}")
+    public ModelAndView excluirEndereco(@PathVariable("idendereco") Long id){
+
+
+
+        var modelAndView = new ModelAndView("cadastro/detalhesPessoa");
+
+        var pessoa = enderecoRepository.findById(id).get().getPessoa();
+
+        enderecoRepository.deleteById(id);
+
+        modelAndView.addObject("pessoaobj", pessoa);
+
+        var estadosIT = estadosRepository.findAll();
+        var paisesIT = paisRepository.findAll();
+        modelAndView.addObject("estados", estadosIT);
+        modelAndView.addObject("paises", paisesIT);
+
+
+        return modelAndView;
+    }
+
+    @GetMapping("/editarendereco/{idendereco}")
+    public ModelAndView editarEndereco(@PathVariable("idendereco") long idendereco){
+        var endereco = enderecoRepository.findById(idendereco);
+
+
+        ModelAndView modelAndView = new ModelAndView("cadastro/cadastroendereco");
+
+        modelAndView.addObject("Objendereco", endereco.get());
 
         return modelAndView;
     }

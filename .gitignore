@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### Volume postgres ###
-/docker/volume_postgres
+/docker/**
 
 ##outros
 src/main/resources/templates/cadastro/estilo.css

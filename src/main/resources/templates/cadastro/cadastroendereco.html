@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Adicionando JQuery -->
+    <link src="https://code.jquery.com/jquery-3.4.1.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+          crossorigin="anonymous">
+    <link href="/resources/vendors/javascripts/cep.js">
+
+</head>
+<body>
+
+<div id="cadastroEndereco">
+
+    <form method="post" th:action="@{/addEnderecoPessoa/{pessoaid}(pessoaid=${Objendereco.pessoa.id})}" th:object="${Objendereco}">
+        <p th:text="${pessoaid}"></p>
+        <p th:text="${Objendereco.pessoa.id}"></p>
+        <input name="id"  th:field="*{id}" readonly="readonly">
+        <label>Cep:
+            <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" th:field="*{cep}"/></label><br />
+        <label>Tipo:
+            <input name="tipo" type="text" id="tipo" size="60" th:field="*{tipo}"/></label><br />
+        <label>Rua:
+            <input name="rua" type="text" id="rua" size="60" /></label><br />
+        <label>Numero:
+            <input name="numero" type="text" id="numero" size="40" th:field="*{numero}" /></label><br />
+        <label>Complemento:
+            <input name="complemento" type="text" id="complemento" size="40" th:field="*{complemento}"/></label><br />
+        <label>Bairro:
+            <input name="bairro" type="text" id="bairro" size="40" th:field="*{bairro}"/></label><br />
+        <label>Cidade:
+            <input name="cidade" type="text" id="cidade" size="40" th:field="*{cidade}"/></label><br />
+        <label>Estado:
+            <input name="uf" type="text" id="uf" size="2" th:field="*{uf}"/></label><br />
+        <label>Pais:
+            <input name="pais" type="text" id="pais" size="2" th:field="*{pais}"/></label><br />
+        <label>IBGE:
+            <input name="ibge" type="text" id="ibge" size="8" th:field="*{ibge}"/></label><br />
+        <input type="submit" value="Salvar" class="btn btn-success">
+    </form>
+</div>
+
+</body>
+
+
+
+</html>

@@ -85,3 +85,7 @@
   .hover:hover {
     background-color: lightgray;
   }
+
+  .labelwidth {
+      width: 70px;
+  }

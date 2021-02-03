@@ -24,7 +24,7 @@ public class UsuarioController {
     @PostMapping(value = "**/salvarusuario")
     public ModelAndView cadastroUsuario(@Valid Usuario usuario, BindingResult bindingResult){
 
-        ModelAndView modelAndView = new ModelAndView("/index");
+        ModelAndView modelAndView = new ModelAndView("index");
         List<String> msg = new ArrayList<>();
 
         if (bindingResult.hasErrors()){

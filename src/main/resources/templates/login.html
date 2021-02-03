@@ -7,22 +7,46 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-
+      <link href="/resources/vendors/stylesheets/style.css" rel="stylesheet">
 
 
     <title>Login</title>
   </head >
-  <body style="background-position: center;">
-        <h1>Acesso ao Sistema</h1>
+  <body class="d-flex justify-content-around">
 
-        <form th:action="@{/login}" method="post">
-            <div class="row col-lg-2">
-                <label>Login</label>
-                <input type="text" name="username">
-                <label>Senha</label>
-                <input type="password" name="password">
-            </div>
-            <input type="submit" name="logar" value="Logar">
+        <form name="f" th:action="@{/login}" method="post">
+            <fieldset>
+                <legend>Please Login</legend>
+<!--                <div th:if="${param.error}" class="alert alert-error" >-->
+<!--                    Invalid username and password.-->
+<!--                </div>-->
+<!--                <div th:text="${param.error} ? 'Invalid username and password.':'asdf'" class="invalid-feedback"></div>-->
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">
+                        Invalid username and password.
+                    </div>
+                </div>
+
+
+                <div th:if="${param.logout}" class="alert alert-success">
+                    You have been logged out.
+                </div>
+                <label class="labelwidth" for="username">
+                    Username
+                </label>
+                <input type="text" id="username" name="username"/>
+                <br>
+                <br>
+                <label class="labelwidth" for="password">
+                    Password
+                </label>
+                <input type="password" id="password" name="password"/>
+                <br>
+                <br>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Log in</button>
+                </div>
+            </fieldset>
         </form>
 
 
