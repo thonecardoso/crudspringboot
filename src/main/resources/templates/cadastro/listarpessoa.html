@@ -18,8 +18,10 @@
                     <div class="card-body">
                         <h5 class="header-title">Lista Pessoas Cadastradas</h5>
                         <p class="text-muted"></p>
-                        <form class="d-flex" method="post" action="pesquisarpessoa">
+
+                        <form class="d-flex" method="post" action="pesquisarpessoa" id="buscar">
                             <input class="form-control me-2" type="search" placeholder="Pesquisa por nome" aria-label="Search" name="nomepesquisa">
+                            <button class="btn btn-outline-success" type="submit" onclick="document.getElementById('buscar').method = 'get'">PDF</button>
                             <button class="btn btn-outline-success" type="submit">Buscar</button>
                         </form>
                         <div class="">
