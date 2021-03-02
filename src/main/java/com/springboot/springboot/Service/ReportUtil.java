@@ -18,11 +18,6 @@ public class ReportUtil implements Serializable {
                                  String relatorio, ServletContext servletContext) throws Exception{
         var jrbcds = new JRBeanCollectionDataSource(listDados);
 
-//        File file = ResourceUtils.getFile("classpath:relatorios/"+relatorio+".jrxml");
-//        File file = ResourceUtils.getFile(servletContext.getRealPath("relatorios")+ File.separator +relatorio+".jrxml");
-
-//        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-
         String caminhoJasper = servletContext.getRealPath("relatorios")
                 + File.separator + relatorio + ".jasper";
 
