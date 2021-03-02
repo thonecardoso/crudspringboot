@@ -132,9 +132,6 @@ public class PessoaController {
 
         response.setContentType("application/octet-stream");
 
-        String headerKey = "Content-disposition";
-        String headerValue = String.format("Attachment; filename=\"%s\"", "relatorio.pdf");
-
         response.getOutputStream().write(pdf);
 
     }
