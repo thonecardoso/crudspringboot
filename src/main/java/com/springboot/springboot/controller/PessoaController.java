@@ -5,6 +5,11 @@ import com.springboot.springboot.Service.ReportUtil;
 import com.springboot.springboot.model.*;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -84,16 +89,14 @@ public class PessoaController {
         pessoaRepository.save(pessoa);
 
         ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
-        Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
-        modelAndView.addObject("pessoas", pessoasIt);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0,3, Sort.by("nome"))));
         return modelAndView;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/listapessoas")
     public ModelAndView pessoas(){
         ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
-        Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
-        modelAndView.addObject("pessoas", pessoasIt);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0,3, Sort.by("nome"))));
         return modelAndView;
     }
 
@@ -110,16 +113,17 @@ public class PessoaController {
         pessoaRepository.deleteById(idpessoa);
 
         ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
-        Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
-        modelAndView.addObject("pessoas", pessoasIt);
+        modelAndView.addObject("pessoas", pessoaRepository.findAll(PageRequest.of(0,3, Sort.by("nome"))));
 
         return modelAndView;
     }
 
     @PostMapping("**/pesquisarpessoa")
-    public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa){
+    public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa,
+                                  @PageableDefault(size = 3, sort = {"nome"}) Pageable pageable){
         ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
-        modelAndView.addObject("pessoas", pessoaRepository.findPessoaByName(nomepesquisa));
+        modelAndView.addObject("pessoas", pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable));
+        modelAndView.addObject("nomepesquisa", nomepesquisa);
         return modelAndView;
     }
 
@@ -254,5 +258,18 @@ public class PessoaController {
 
 
     }
+
+    @GetMapping("/listapaginada")
+    public ModelAndView paginacao(@PageableDefault(size = 3) Pageable pageable,
+                                  @RequestParam("nomepesquisa") String nomepesquisa,
+                                  ModelAndView modelAndView){
+        Page<Pessoa> pagePessoa = pessoaRepository.findPessoaByNamePage(nomepesquisa, pageable);
+        modelAndView.addObject("pessoas", pagePessoa);
+        modelAndView.addObject("nomepesquisa", nomepesquisa);
+        modelAndView.setViewName("cadastro/listarpessoa");
+
+        return modelAndView;
+    }
+
 
 }
