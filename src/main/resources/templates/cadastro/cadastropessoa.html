@@ -2,66 +2,93 @@
 <html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-      <title>Cadastro de Pessoa</title>
-  </head>
-  <body style="background-color: black; padding-top: 25px; padding-bottom: 25px;">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="/resources/vendors/stylesheets/style.css" rel="stylesheet">
+    <title>Cadastro de Pessoa</title>
+</head>
+<body >
 
-    <div class="container" style="background-color: lightcyan; padding-bottom: 25px; padding-top: 25px;">
-      <div class="col-md-8 order-md-1  ">
+
+<div class="container containerFlex" >
+    <div class=" order-md-1  itensFlex">
 
         <br/>
-          <div th:each="m : ${msg}">
+        <div th:each="m : ${msg}">
             <span th:text="${m}"></span>
-          </div>
+        </div>
         <br/>
 
-        <form class="needs-validation was-validated" novalidate="" action="salvarpessoa" METHOD="post" th:object="${pessoaobj}">
-          <h4 class="mb-3">Cadastro Pessoa</h4>
+        <form class="needs-validation was-validated" novalidate="" action="salvarpessoa" METHOD="post"
+              th:object="${pessoaobj}" enctype="multipart/form-data">
+            <h4 class="mb-3">Cadastro Pessoa</h4>
             <div class="row">
-              <div class="col-md-6 mb-3">
-                <input name="id" type="hidden" th:field="*{id}" readonly="readonly">
-                <label for="firstName">Nome</label>
-                <input name="nome" type="text" class="form-control" id="firstName" placeholder="" value="" required="" th:field="*{nome}">
-                <div class="invalid-feedback">
-                  Um nome válido é esperado.
+                <div class="col-md-6 mb-3">
+                    <input name="id" type="hidden" th:field="*{id}" readonly="readonly">
+                    <label for="firstName">Nome</label>
+                    <input name="nome" type="text" class="form-control" id="firstName" placeholder="" value=""
+                           required="" th:field="*{nome}">
+                    <div class="invalid-feedback">
+                        Um nome válido é esperado.
+                    </div>
                 </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="lastName">Sobrenome</label>
-                <input name="sobrenome" type="text" class="form-control" id="lastName" placeholder="" value="" required="" th:field="*{sobrenome}">
-                <div class="invalid-feedback">
-                  Um Sobrenome válido é esperado.
+                <div class="col-md-6 mb-3">
+                    <label for="lastName">Sobrenome</label>
+                    <input name="sobrenome" type="text" class="form-control" id="lastName" placeholder="" value=""
+                           required="" th:field="*{sobrenome}">
+                    <div class="invalid-feedback">
+                        Um sobrenome válido é esperado.
+                    </div>
                 </div>
-              </div>
             </div>
             <div class="mb-3">
-              <label for="email">Email <span class="text-muted">(Opcional)</span></label>
-              <input required name="email" type="email" class="form-control" id="email" placeholder="you@example.com" th:field="*{email}">
-              <div class="invalid-feedback">
-                Digite um email válido.
-              </div>
+                <label for="email">Email <span class="text-muted">(Opcional)</span></label>
+                <input required name="email" type="email" class="form-control" id="email" placeholder="you@example.com"
+                       th:field="*{email}">
+                <div class="invalid-feedback">
+                    Digite um email válido.
+                </div>
             </div>
+            <div>
+                <label for="cargo">Cargo</label>
+                <select class="custom-select d-block w-100 form-control" id="cargo" required=""
+                        th:field="*{cargo}">
+                    <option value="">Escolha...</option>
+                    <option th:each="c : ${T(com.springboot.springboot.model.Cargo).values()}" th:text="${c.nome}"
+                            th:value="${c.valor}"
+                    ></option>
+                </select>
+            </div>
+            <br>
 
             <div class="mb-3" sec:authorize="hasRole('ROLE_PADEIRO')">
-              <label for="address">Idade</label>
-              <input name="endereco" type="text" class="form-control" id="address" placeholder="Rua São José, 55" required="" th:field="*{idade}">
-              <div class="invalid-feedback">
-                Digite um Endereço válido.
-              </div>
+                <label for="address">Idade</label>
+                <input name="endereco" type="text" class="form-control" id="address" placeholder="Rua São José, 55"
+                       required="" th:field="*{idade}">
+                <div class="invalid-feedback">
+                    Digite um Endereço válido.
+                </div>
+            </div>
+
+            <div class="mb-3" >
+                <label for="file">Foto</label>
+                <input name="file" type="file" class="form-control" id="file">
+                <div class="invalid-feedback">
+                    Digite um Endereço válido.
+                </div>
             </div>
 
 
             <hr class="mb-4">
-            
+
             <button class="btn btn-primary btn-lg btn-block" type="submit">Salvar</button>
-            
+
         </form>
-      </div>
     </div>
-  </body>
+</div>
+</body>
 </html>

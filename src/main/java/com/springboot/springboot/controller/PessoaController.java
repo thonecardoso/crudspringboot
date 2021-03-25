@@ -3,36 +3,31 @@ package com.springboot.springboot.controller;
 import com.springboot.springboot.Repository.*;
 import com.springboot.springboot.Service.ReportUtil;
 import com.springboot.springboot.model.*;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 public class PessoaController {
 
-    @Autowired
     private PessoaRepository pessoaRepository;
-    @Autowired
-    private EstadosRepository estadosRepository;
-    @Autowired
-    private PaisRepository paisRepository;
-
-    @Autowired
     private TelefoneRepository telefoneRepository;
-
-    @Autowired
     private EnderecoRepository enderecoRepository;
-
-    @Autowired
     private ReportUtil reportUtil;
 
 
@@ -40,21 +35,17 @@ public class PessoaController {
     @RequestMapping(method = RequestMethod.GET, value = "/cadastropessoa")
     public ModelAndView inicio(){
 
-
-        var estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
-
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
         modelAndView.addObject("pessoaobj", new Pessoa());
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
         return modelAndView;
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "**/salvarpessoa")
-    public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult){
-
+    @RequestMapping(method = RequestMethod.POST,
+            value = "**/salvarpessoa",
+            consumes = {"multipart/form-data"}
+    )
+    public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult bindingResult, final MultipartFile file) throws IOException {
 
         if (bindingResult.hasErrors()){
             ModelAndView modelAndView1 = new ModelAndView("cadastro/cadastropessoa");
@@ -66,6 +57,28 @@ public class PessoaController {
             modelAndView1.addObject("pessoaobj", pessoa);
 
             return modelAndView1;
+        }
+
+        if(pessoa.getId()==0) {
+            pessoa.setCreateAt(new Date());
+        }
+        else {
+            pessoa.setCreateAt(pessoaRepository.findById(pessoa.getId()).get().getCreateAt());
+            pessoa.setUpdateAt(new Date());
+        }
+
+        if(file.getSize() > 0){
+            pessoa.setFoto(file.getBytes());
+            pessoa.setTypeFileFoto(file.getContentType());
+            pessoa.setNameFileFoto(file.getOriginalFilename());
+        }else{
+            if(pessoa.getId()>0){
+                var pessoaTemp = pessoaRepository.findById(pessoa.getId()).get();
+                pessoa.setFoto(pessoaTemp.getFoto());
+                pessoa.setTypeFileFoto(pessoaTemp.getTypeFileFoto());
+                pessoa.setNameFileFoto(pessoaTemp.getNameFileFoto());
+            }
+
         }
 
         pessoaRepository.save(pessoa);
@@ -87,12 +100,8 @@ public class PessoaController {
     @GetMapping("/editarpessoa/{idpessoa}")
     public ModelAndView editar(@PathVariable("idpessoa") long idpessoa){
         var pessoa = pessoaRepository.findById(idpessoa);
-        Iterable<Estados> estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
         ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
         modelAndView.addObject("pessoaobj", pessoa.get());
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
         return modelAndView;
     }
 
@@ -100,14 +109,10 @@ public class PessoaController {
     public ModelAndView excluir(@PathVariable("idpessoa") long idpessoa){
         pessoaRepository.deleteById(idpessoa);
 
-        Iterable<Estados> estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
         ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
         Iterable<Pessoa> pessoasIt = pessoaRepository.findAll();
         modelAndView.addObject("pessoas", pessoasIt);
 
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
         return modelAndView;
     }
 
@@ -115,8 +120,6 @@ public class PessoaController {
     public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa){
         ModelAndView modelAndView = new ModelAndView("cadastro/listarpessoa");
         modelAndView.addObject("pessoas", pessoaRepository.findPessoaByName(nomepesquisa));
-        modelAndView.addObject("estados", estadosRepository.findAll());
-        modelAndView.addObject("paises", paisRepository.findAll());
         return modelAndView;
     }
 
@@ -139,12 +142,8 @@ public class PessoaController {
     @GetMapping("/detalhesPessoa/{idpessoa}")
     public ModelAndView telefones(@PathVariable("idpessoa") long idpessoa){
         var pessoa = pessoaRepository.findById(idpessoa);
-        Iterable<Estados> estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
         ModelAndView modelAndView = new ModelAndView("cadastro/detalhesPessoa");
         modelAndView.addObject("pessoaobj", pessoa.get());
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
         return modelAndView;
     }
 
@@ -159,34 +158,11 @@ public class PessoaController {
 
         modelAndView.addObject("pessoaobj", pessoa);
 
-        var estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
-
-
-        return modelAndView;
-    }
-
-
-    @RequestMapping(method = RequestMethod.GET, value = "**/addPais")
-    public ModelAndView addPais(@ModelAttribute(value="paisadd") Pais pais){
-
-        paisRepository.save(pais);
-        var estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
-
-        ModelAndView modelAndView = new ModelAndView("cadastro/cadastropessoa");
-        modelAndView.addObject("pessoaobj", new Pessoa());
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
         return modelAndView;
     }
 
     @GetMapping("**/excluirTelefone/{idtelefone}")
     public ModelAndView excluirTelefone(@PathVariable("idtelefone") Long id){
-
-
 
         var modelAndView = new ModelAndView("cadastro/detalhesPessoa");
 
@@ -195,12 +171,6 @@ public class PessoaController {
         telefoneRepository.deleteById(id);
 
         modelAndView.addObject("pessoaobj", pessoa.get());
-
-        var estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
-
 
         return modelAndView;
     }
@@ -228,19 +198,11 @@ public class PessoaController {
 
         modelAndView.addObject("pessoaobj", pessoa.get());
 
-        var estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
-
-
         return modelAndView;
     }
 
     @GetMapping("**/excluirEndereco/{idendereco}")
     public ModelAndView excluirEndereco(@PathVariable("idendereco") Long id){
-
-
 
         var modelAndView = new ModelAndView("cadastro/detalhesPessoa");
 
@@ -249,12 +211,6 @@ public class PessoaController {
         enderecoRepository.deleteById(id);
 
         modelAndView.addObject("pessoaobj", pessoa);
-
-        var estadosIT = estadosRepository.findAll();
-        var paisesIT = paisRepository.findAll();
-        modelAndView.addObject("estados", estadosIT);
-        modelAndView.addObject("paises", paisesIT);
-
 
         return modelAndView;
     }
@@ -269,6 +225,34 @@ public class PessoaController {
         modelAndView.addObject("Objendereco", endereco.get());
 
         return modelAndView;
+    }
+
+    @GetMapping("**/downloadFoto/{idpessoa}")
+    public void downloadFoto(@PathVariable("idpessoa") Long idpessoa,
+                             HttpServletResponse response) throws IOException {
+
+        Pessoa pessoa = pessoaRepository.findById(idpessoa).get();
+
+        if(pessoa.getFoto()!=null){
+
+            response.setContentLength(pessoa.getFoto().length);
+             /* Setar tipo de arquivo para download ou pode ser generica
+             * application/octet-stream */
+            response.setContentType(pessoa.getTypeFileFoto());
+
+            /*Define cabeçalho da resposta*/
+            String headerkey = "Content-Disposition";
+            String headerValue = String.format("attachment; filename=\"%s\"", pessoa.getNameFileFoto());
+            response.setHeader(headerkey,headerValue);
+
+            /*Finaliza a resposta passando o arquivo */
+            response.getOutputStream().write(pessoa.getFoto());
+
+
+
+        }
+
+
     }
 
 }

@@ -35,8 +35,9 @@
                                     <th>Email</th>
                                     <th>Idade</th>
 
-                                    <th></th>
-                                    <th></th>
+                                    <th>Foto</th>
+                                    <th>Editar</th>
+                                    <th>Excluir</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -48,6 +49,8 @@
                                         <td th:text = "${pessoa.email}"></td>
                                         <td th:text = "${pessoa.idade}"></td>
 
+                                        <td><a class="btn btn-light" th:if="${pessoa.foto == null}">Sem Foto</a>
+                                            <a th:if="${pessoa.foto != null}" th:href="@{/downloadFoto/{idpessoa}(idpessoa=${pessoa.id})}" class="btn btn-info">Download</a></td>
                                         <td><a th:href="@{/editarpessoa/{idpessoa}(idpessoa=${pessoa.id})}" class="btn btn-primary">Editar</a></td>
                                         <td><a th:href="@{/excluirpessoa/{idpessoa}(idpessoa=${pessoa.id})}" class="btn btn-danger">Excluir</a></td>
 

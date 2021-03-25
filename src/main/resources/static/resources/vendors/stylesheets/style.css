@@ -1,3 +1,9 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
 /* The side navigation menu */
 .sidenav {
     height: 100%; /* 100% Full-height */
@@ -88,4 +94,17 @@
 
   .labelwidth {
       width: 70px;
+  }
+
+  .containerFlex {
+      background-color: lightcyan;
+      display: flex;
+
+      border-style: solid;
+      border-color: #818181;
+      padding-bottom: 10px;
+  }
+
+  .itensFlex {
+      flex: 1;
   }
