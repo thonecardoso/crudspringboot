@@ -12,42 +12,94 @@
 
     <title>Login</title>
   </head >
-  <body class="d-flex justify-content-around">
 
-        <form name="f" th:action="@{/login}" method="post">
-            <fieldset>
-                <legend>Please Login</legend>
-<!--                <div th:if="${param.error}" class="alert alert-error" >-->
-<!--                    Invalid username and password.-->
-<!--                </div>-->
-<!--                <div th:text="${param.error} ? 'Invalid username and password.':'asdf'" class="invalid-feedback"></div>-->
-                <div th:if="${param.error}">
-                    <div class="alert alert-danger">
-                        Invalid username and password.
+  <Style type="text/css">
+
+      /** {*/
+      /*    margin: 0;*/
+      /*    padding: 0;*/
+      /*}*/
+      /*.formulario{*/
+      /*    margin: 0;*/
+      /*    padding: 0;*/
+      /*}*/
+      .boxFlex{
+          margin-top: 40px;
+          display: flex;
+          justify-content: center;
+          box-shadow: 0 0 60px rgba(0, 0, 0, 0.05);
+
+
+      }
+
+      .flexItems {
+          flex: 1;
+      }
+      .logFlex{
+          background-color: aliceblue;
+          border-radius: 3%;
+          border: 1px solid gray;
+      }
+      .iflex{
+          flex: 1;
+          margin: 15px auto;
+      }
+      .boxFlex  fieldset {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          flex-wrap: wrap;
+          margin: 6px;
+
+      }
+      .boxFlex  fieldset legend {
+          text-align: center;
+      }
+
+
+  </Style>
+
+
+  <body class="boxFlex">
+
+        <div class="logFlex">
+            <form name="f" th:action="@{/login}" method="post" class="formulario">
+                <fieldset>
+                    <legend class="flexItems">Please Login</legend>
+                    <!--                <div th:if="${param.error}" class="alert alert-error" >-->
+                    <!--                    Invalid username and password.-->
+                    <!--                </div>-->
+                    <!--                <div th:text="${param.error} ? 'Invalid username and password.':'asdf'" class="invalid-feedback"></div>-->
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            Invalid username and password.
+                        </div>
                     </div>
-                </div>
 
 
-                <div th:if="${param.logout}" class="alert alert-success">
-                    You have been logged out.
-                </div>
-                <label class="labelwidth" for="username">
-                    Username
-                </label>
-                <input type="text" id="username" name="username"/>
-                <br>
-                <br>
-                <label class="labelwidth" for="password">
-                    Password
-                </label>
-                <input type="password" id="password" name="password"/>
-                <br>
-                <br>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Log in</button>
-                </div>
-            </fieldset>
-        </form>
+                    <div th:if="${param.logout}" class="alert alert-success">
+                        You have been logged out.
+                    </div>
+                    <div class="iflex">
+                        <label class="labelwidth flexItems" for="username">
+                            Username
+                        </label>
+                        <input type="text" id="username" name="username" class="flexItems"/>
+                    </div>
+
+                    <div class="iflex">
+                        <label class="labelwidth flexItems" for="password">
+                            Password
+                        </label>
+                        <input type="password" id="password" name="password" class="flexItems"/>
+                    </div>
+
+
+                        <button type="submit" class="btn btn-primary">Log in</button>
+
+                </fieldset>
+            </form>
+        </div>
 
 
 

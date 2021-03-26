@@ -2,22 +2,27 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
     <!-- Adicionando JQuery -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-          crossorigin="anonymous"></script>
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
     <link href="/resources/vendors/javascripts/cep.js">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
 
 </head>
 <body>
 <!-- Adicionando Javascript -->
-<script type="text/javascript" >
+<script type="text/javascript">
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         $('#dataNascimento').datepicker({
-            showOthermonths:true,
+            showOthermonths: true,
             format: 'yyyy-mm-dd'
         });
 
@@ -32,7 +37,7 @@
         }
 
         //Quando o campo cep perde o foco.
-        $("#cep").blur(function() {
+        $("#cep").blur(function () {
 
             //Nova variável "cep" somente com dígitos.
             var cep = $(this).val().replace(/\D/g, '');
@@ -44,7 +49,7 @@
                 var validacep = /^[0-9]{8}$/;
 
                 //Valida o formato do CEP.
-                if(validacep.test(cep)) {
+                if (validacep.test(cep)) {
 
                     //Preenche os campos com "..." enquanto consulta webservice.
                     $("#rua").val("...");
@@ -54,7 +59,7 @@
                     $("#ibge").val("...");
 
                     //Consulta o webservice viacep.com.br/
-                    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+                    $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
 
                         if (!("erro" in dados)) {
                             //Atualiza os campos com os valores da consulta.
@@ -86,38 +91,92 @@
 
 </script>
 
+<Style>
+    .meuForm {
+        display: flex;
+        flex-direction: column;
+        background-color: aliceblue;
+        border-radius: 3%;
+        border: 1px solid gray;
+        padding: 1rem;
+
+        justify-content: space-between;
+    }
+    .item{
+        display: flex;
+        margin: 2px;
+
+        flex-wrap: wrap;
+
+    }
+
+    .item input{
+        flex: 1;
+        min-width: 13rem;
+    }
+    button {
+        margin-top: 3px;
+        max-width: 8rem;
+        align-self: flex-end;
+    }
+    #cadastroEndereco {
+        display: flex;
+        justify-content: center;
+    }
+</Style>
+
 <div id="cadastroEndereco">
 
-    <form method="post" th:action="@{/addEnderecoPessoa/{pessoaid}(pessoaid=${Objendereco.pessoa.id})}" th:object="${Objendereco}">
-        <p th:text="${pessoaid}"></p>
-        <p th:text="${Objendereco.pessoa.id}"></p>
-        <input name="id"  th:field="*{id}" readonly="readonly">
-        <label>Cep:
-            <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" th:field="*{cep}"/></label><br />
-        <label>Tipo:
-            <input name="tipo" type="text" id="tipo" size="60" th:field="*{tipo}"/></label><br />
-        <label>Rua:
-            <input name="rua" type="text" id="rua" size="60" th:field="*{rua}"/></label><br />
-        <label>Numero:
-            <input name="numero" type="text" id="numero" size="40" th:field="*{numero}" /></label><br />
-        <label>Complemento:
-            <input name="complemento" type="text" id="complemento" size="40" th:field="*{complemento}"/></label><br />
-        <label>Bairro:
-            <input name="bairro" type="text" id="bairro" size="40" th:field="*{bairro}"/></label><br />
-        <label>Cidade:
-            <input name="cidade" type="text" id="cidade" size="40" th:field="*{cidade}"/></label><br />
-        <label>Estado:
-            <input name="uf" type="text" id="uf" size="2" th:field="*{uf}"/></label><br />
-        <label>Pais:
-            <input name="pais" type="text" id="pais" size="2" th:field="*{pais}"/></label><br />
-        <label>IBGE:
-            <input name="ibge" type="text" id="ibge" size="8" th:field="*{ibge}"/></label><br />
-        <input type="submit" value="Salvar" class="btn btn-success">
+    <form method="post" th:action="@{/addEnderecoPessoa/{pessoaid}(pessoaid=${Objendereco.pessoa.id})}"
+          th:object="${Objendereco}" class="meuForm">
+        <h1>Cadastro de Endereço</h1>
+
+        <input name="id" th:text="*{id}" type="hidden">
+        <div class="item">
+            <label for="cep">Cep:</label>
+            <input class="form-control form-control-sm" name="cep" type="text" id="cep" value="" maxlength="9" th:field="*{cep}"/>
+        </div>
+        <div class="item">
+            <label for="tipo">Tipo:</label>
+            <input class="form-control form-control-sm" name="tipo" type="text" id="tipo" th:field="*{tipo}"/>
+        </div>
+        <div class="item">
+            <label for="rua">Rua:</label>
+            <input name="rua" class="form-control form-control-sm" type="text" id="rua" th:field="*{rua}"/>
+        </div>
+        <div class="item">
+            <label for="numero">Numero:</label>
+            <input class="form-control form-control-sm" name="numero" type="text" id="numero" th:field="*{numero}"/>
+        </div>
+        <div class="item">
+            <label for="complemento">Complemento:</label>
+            <input class="form-control form-control-sm" name="complemento" type="text" id="complemento" th:field="*{complemento}"/>
+        </div>
+        <div class="item">
+            <label for="bairro">Bairro:</label>
+            <input class="form-control form-control-sm" name="bairro" type="text" id="bairro" th:field="*{bairro}"/>
+        </div>
+        <div class="item">
+            <label for="cidade">Cidade:</label>
+            <input class="form-control form-control-sm" name="cidade" type="text" id="cidade" th:field="*{cidade}"/>
+        </div>
+        <div class="item">
+            <label for="uf">Estado:</label>
+            <input class="form-control form-control-sm" name="uf" type="text" id="uf" th:field="*{uf}"/>
+        </div>
+        <div class="item">
+            <label for="pais">Pais:</label>
+            <input class="form-control form-control-sm" name="pais" type="text" id="pais" th:field="*{pais}"/>
+        </div>
+        <div class="item">
+            <label for="ibge">IBGE:</label>
+            <input class="form-control form-control-sm" name="ibge" type="text" id="ibge" th:field="*{ibge}"/>
+        </div>
+        <button type="submit" value="Salvar" class="btn btn-success">Salvar</button>
     </form>
 </div>
 
 </body>
-
 
 
 </html>

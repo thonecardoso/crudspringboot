@@ -14,7 +14,7 @@
   </head>
   <body>
 
-    <!--Menu-->
+       <!--Menu-->
     <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
@@ -66,25 +66,27 @@
 
 
 
-    <h1>Hello Spring!!!</h1>
 
-    <a href="/cadastropessoa">Cadastro Pessoa</a>
 
-    <div>
-        <br/>
-        <div th:each="m : ${msg}">
-            <span th:text="${m}"></span>
-        </div>
-        <br/>
-        <h4>Cadastro Usuario</h4>
-        <form action="salvarusuario" METHOD="post" th:object="${usuario}">
-        <label>Usuario</label>
-            <input name="login" type="text" id="login" th:field="*{login}">
-            <label>Senha</label>
-            <input name="senha" type="password" id="senha" th:field="*{senha}">
-            <input type="submit" value="Salvar">
-        </form>
-    </div>
+
+
+
+<!--    <div>-->
+<!--        <br/>-->
+<!--        <div th:each="m : ${msg}">-->
+<!--            <span th:text="${m}"></span>-->
+<!--        </div>-->
+<!--        <br/>-->
+<!--        <h4>Cadastro Usuario</h4>-->
+<!--        <form action="salvarusuario" METHOD="post" th:object="${usuario}">-->
+<!--        <label>Usuario</label>-->
+<!--            <input name="login" type="text" id="login" th:field="*{login}">-->
+<!--            <label>Senha</label>-->
+<!--            <input name="senha" type="password" id="senha" th:field="*{senha}">-->
+<!--            <input type="submit" value="Salvar">-->
+<!--        </form>-->
+<!--    </div>-->
+
 
 
 
