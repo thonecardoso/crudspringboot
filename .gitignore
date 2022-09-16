@@ -39,4 +39,6 @@ build/
 src/main/resources/templates/cadastro/estilo.css
 src/main/resources/templates/cadastro/cad.html
 
+docker/volume_postgres
+
 
