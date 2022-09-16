@@ -34,11 +34,13 @@ build/
 
 ### Volume postgres ###
 /docker/**
+/docker/
+docker/
 
 ##outros
 src/main/resources/templates/cadastro/estilo.css
 src/main/resources/templates/cadastro/cad.html
 
-docker
+
 
 
